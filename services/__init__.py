@@ -35,4 +35,5 @@ async def post_service(bot, data: types.Message):
             translated_text = GoogleTranslator(source=group_language, target=item["lang"]).translate(text)
             if translated_text:
                 for group in to_groups_ids:
-                    await bot.send_message(group["id"], translated_text, parse_mode="HTML")
+                    if group["id"] != group_id:
+                        await bot.send_message(group["id"], translated_text, parse_mode="HTML")
