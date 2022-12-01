@@ -1,0 +1,7 @@
+requests
+python-dotenv
+aiogram
+aiohttp
+asyncio
+deep_translator
+bleach
