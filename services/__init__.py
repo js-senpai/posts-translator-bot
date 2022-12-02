@@ -1,7 +1,7 @@
 import bleach
 from aiogram import types
 from deep_translator import GoogleTranslator
-
+import re
 from config import BaseConfig
 
 get_config = BaseConfig()
@@ -32,7 +32,10 @@ async def post_service(bot, data: types.Message):
             break
     if check_id:
         for item in to_groups_ids:
-            translated_text = GoogleTranslator(source=group_language, target=item["lang"]).translate(text)
+            querywords = text.split()
+            resultwords = [word for word in querywords if word.lower() not in item["stopwords"]]
+            result = ' '.join(resultwords)
+            translated_text = GoogleTranslator(source=group_language, target=item["lang"]).translate(result)
             if translated_text:
                 for group in to_groups_ids:
                     if group["id"] != group_id:
