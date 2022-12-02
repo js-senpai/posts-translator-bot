@@ -13,7 +13,7 @@ async def post_service(bot, data: types.Message):
     # Get group title
     group_title = data["chat"]["title"]
     # Get text and remove all links
-    text = bleach.clean(data.html_text, tags=['b', 'i', 'strong', 'i', 'em', 'code', 's', 'strike', 'del', 'pre'],
+    text = bleach.clean(data.html_text, tags=['b', 'i', 'strong', 'i', 'em', 'code', 's', 'strike', 'del', 'pre','img'],
                         strip=True)
     print(f'New post from group "{group_title}" with id {group_id}')
     # Get settings from json

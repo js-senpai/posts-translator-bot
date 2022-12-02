@@ -15,6 +15,13 @@ async def post_handler(msg: types.Message):
     try:
         await post_service(bot,msg)
     except Exception as e:
+        print(f'Error in post handler method. {e}')
+
+@dp.message_handler()
+async def message_handler(msg: types.Message):
+    try:
+        await post_service(bot, msg)
+    except Exception as e:
         print(f'Error in message handler method. {e}')
 
 
