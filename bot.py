@@ -10,14 +10,16 @@ get_config = BaseConfig()
 bot = Bot(token=get_config.TELEGRAM_API_TOKEN, parse_mode="HTML")
 dp = Dispatcher(bot)
 
-@dp.channel_post_handler()
+
+@dp.channel_post_handler(content_types=['photo', 'text'])
 async def post_handler(msg: types.Message):
     try:
-        await post_service(bot,msg)
+        await post_service(bot, msg)
     except Exception as e:
         print(f'Error in post handler method. {e}')
 
-@dp.message_handler()
+
+@dp.message_handler(content_types=['photo', 'text'])
 async def message_handler(msg: types.Message):
     try:
         await post_service(bot, msg)
