@@ -15,9 +15,10 @@ async def post_service(bot, data: types.Message):
 
     def allow_img_urls(tag, name, value):
         return name == 'href' and (value.endswith('.png') or value.endswith('.jpg'))
+    print(data.html_text)
     # Get text and remove all links
     text = bleach.clean(data.html_text, tags=['b', 'i', 'strong', 'i', 'em', 'code', 's', 'strike', 'del', 'pre', 'a'],
-                        strip=True, attributes=allow_img_urls) if data["text"] else ''
+                        strip=True, attributes=allow_img_urls) if data.html_text else ''
     print(f'New post from group "{group_title}" with id {group_id}')
     # Get settings from json
     get_groups = get_config.get_json_configs()
