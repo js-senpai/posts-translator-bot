@@ -37,8 +37,9 @@ async def post_service(bot, data: types.Message):
     if check_id:
         for item in to_groups_ids:
             querywords = text.split()
+            stop_words = [x.lower() for x in item["stopwords"]]
             resultwords = [
-                word for word in querywords if word.lower() not in item["stopwords"]]
+                word for word in querywords if word.lower() not in stop_words]
             result = ' '.join(resultwords)
             translated_text = GoogleTranslator(
                 source=group_language, target=item["lang"]).translate(result) if result else ''
