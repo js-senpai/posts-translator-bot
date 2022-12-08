@@ -1,3 +1,4 @@
+import json
 import bleach
 from aiogram import types
 from deep_translator import GoogleTranslator
@@ -15,7 +16,6 @@ async def post_service(bot, data: types.Message):
 
     def allow_img_urls(tag, name, value):
         return name == 'href' and (value.endswith('.png') or value.endswith('.jpg'))
-    print(data.html_text)
     # Get text and remove all links
     text = bleach.clean(data.html_text, tags=['b', 'i', 'strong', 'i', 'em', 'code', 's', 'strike', 'del', 'pre', 'a'],
                         strip=True, attributes=allow_img_urls) if data.html_text else ''
@@ -37,14 +37,15 @@ async def post_service(bot, data: types.Message):
     if check_id:
         for item in to_groups_ids:
             querywords = text.split()
-            stop_words = [x.lower() for x in item["stopwords"]]
             resultwords = [
-                word for word in querywords if word.lower() not in stop_words]
+                word for word in querywords if len(list(filter(lambda x: bool(re.match(str(x).replace('\\', '\\'), word)), item["stopwords"]))) == 0]
             result = ' '.join(resultwords)
             translated_text = GoogleTranslator(
                 source=group_language, target=item["lang"]).translate(result) if result else ''
-            get_text = translated_text if translated_text else "&#160"
+            get_text = translated_text if translated_text else "&#160" if isinstance(
+                result, str) else result
             for group in to_groups_ids:
+                time.sleep(5)
                 if group["id"] != group_id:
                     if "photo" in data:
                         await bot.send_photo(group["id"], photo=data["photo"][0]["file_id"], caption=get_text, parse_mode="HTML")

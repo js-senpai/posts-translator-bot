@@ -15,7 +15,7 @@ class BaseConfig:
         pass
 
     def get_json_configs(self):
-        with open('./settings.json', 'r') as file:
+        with open('./settings.json', 'r', encoding='utf-8') as file:
             # Read file
             get_data = file.read()
             return json.loads(get_data)
